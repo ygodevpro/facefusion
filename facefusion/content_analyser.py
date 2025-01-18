@@ -11,7 +11,7 @@ from facefusion.thread_helper import conditional_thread_semaphore
 from facefusion.typing import DownloadScope, Fps, InferencePool, ModelOptions, ModelSet, VisionFrame
 from facefusion.vision import detect_video_fps, get_video_frame, read_image
 
-PROBABILITY_LIMIT = 0.80
+PROBABILITY_LIMIT = 1.0
 RATE_LIMIT = 10
 STREAM_COUNTER = 0
 
@@ -74,9 +74,9 @@ def analyse_stream(vision_frame : VisionFrame, video_fps : Fps) -> bool:
 
 
 def analyse_frame(vision_frame : VisionFrame) -> bool:
-	
-
-	return false 
+ 	vision_frame = prepare_frame(vision_frame)
+ 	 probability = forward(vision_frame)
+	 return probability > PROBABILITY_LIMIT
 
 
 def forward(vision_frame : VisionFrame) -> float:
